@@ -20,6 +20,7 @@ public class ProductDTO {
     private Long price;
     // @NotNull(message = "category id should not be Null")
     private Long categoryId;
+    private Long vendorId;
     //    private List<String> images;
     private List<ProductImage> productImages;
 

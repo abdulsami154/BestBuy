@@ -14,4 +14,6 @@ public interface CartProductRepository extends JpaRepository<CartProduct,Long> {
     @Modifying
     @Query(value = "select * from cart_product where cart_id=:id",nativeQuery = true)
     List<CartProduct> findAllCartByid(@Param("id")Long id);
+    @Query(value = "select * from cart_product where cart_id=:cartId And product_id=:productId",nativeQuery = true)
+    List<CartProduct> findByMultipleIds(@Param("cartId") Long cartId,@Param("productId") Long productId);
 }

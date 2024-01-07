@@ -66,12 +66,34 @@ public class CartProductImplService implements CartProductService {
     public CartProductDTO save(CartProductRequest cartProductRequest) {
         CartProductDTO cartProductDTO=new CartProductDTO();
         Cart cart =cartRepository.findByIds(cartProductRequest.getCartId());
+        System.out.println();
+        CartProduct cartProduct=null;
         Product product=productRepository.findByIds(cartProductRequest.getProductId());
-        cartProductDTO.setProduct(product);
-        cartProductDTO.setCart(cart);
-        cartProductDTO.setQuantity(cartProductRequest.getQuantity());
-        cartProductDTO.setAmount(product.getPrice().doubleValue());
-        CartProduct cartProduct=cartProductRepository.save(toDo(cartProductDTO));
+        List<CartProduct> cartProduct1=cartProductRepository.findByMultipleIds(cart.getId(),product.getId());
+        if (cartProduct1.size()>0){
+            for (CartProduct cartproduct2:cartProduct1) {
+                cartProductDTO.setId(cartproduct2.getId());
+                cartProductDTO.setProduct(product);
+                cartProductDTO.setCart(cart);
+                Long quantity=cartproduct2.getQuantity();
+                quantity+=1;
+                cartProductDTO.setQuantity(quantity);
+                cartProductDTO.setAmount(product.getPrice().doubleValue());
+            }
+//            cartProductDTO.setId(cartProduct1.get);
+//            cartProductDTO.setProduct(product);
+//            cartProductDTO.setCart(cart);
+//            Long quantity=cartProductRequest.getQuantity();
+//            quantity++;
+//            cartProductDTO.setQuantity(quantity);
+//            cartProductDTO.setAmount(product.getPrice().doubleValue());
+        }else {
+            cartProductDTO.setProduct(product);
+            cartProductDTO.setCart(cart);
+            cartProductDTO.setQuantity(cartProductRequest.getQuantity());
+            cartProductDTO.setAmount(product.getPrice().doubleValue());
+        }
+        cartProduct=cartProductRepository.save(toDo(cartProductDTO));
 
         return toDto(cartProduct);
     }

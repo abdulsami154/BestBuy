@@ -6,5 +6,5 @@ import com.example.Best.Buy.dto.VendorDTO;
 public interface VendorService {
     VendorDTO save(VendorDTO vendorDTO);
 
-    VendorDTO checkVendor(VendorDTO vendorDTO);
+    String checkVendor(VendorDTO vendorDTO);
 }

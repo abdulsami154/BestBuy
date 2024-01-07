@@ -36,10 +36,11 @@ public class ProductImplService implements ProductService {
 
     @Override
     public List<ProductResponse> getProduct() {
-        ProductResponse productResponse=new ProductResponse();
         List<ProductResponse> productResponseList=new ArrayList<>();
         List<Product> product=productRepository.findAll();
         for (Product product1:product){
+
+            ProductResponse productResponse=new ProductResponse();
             productResponse.setId(product1.getId());
             productResponse.setCategory(product1.getCategory());
             List<ProductImage> images = new ArrayList<>();
@@ -79,6 +80,8 @@ public class ProductImplService implements ProductService {
             product.setCategory(category);
             product.setName(productDto.getName());
             product.setPrice(productDto.getPrice());
+            productDto.setVendorId(1L);
+            System.out.println(productDto.getImage());
             Vendor vendor = vendorRepository.findById(productDto.getVendorId()).get();
             if (productDto.getVendorId() != null) {
                 product.setVendor(vendor);
@@ -90,6 +93,38 @@ public class ProductImplService implements ProductService {
         }
         return toDto(product);
 
+    }
+
+    @Override
+    public Long getCountTotalProducts() {
+        return productRepository.count();
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductsByVendorId(Long vendorId) {
+        List<ProductResponse> productResponseList=new ArrayList<>();
+        List<Product> product=productRepository.findByVendor(vendorId);
+        for (Product product1:product){
+
+            ProductResponse productResponse=new ProductResponse();
+            productResponse.setId(product1.getId());
+            productResponse.setCategory(product1.getCategory());
+            List<ProductImage> images = new ArrayList<>();
+            for (ProductImage image: product1.getProductImages()
+            ) {
+                ProductImage p = new ProductImage();
+                p.setImage(image.getImage());
+                productResponse.setImage(p);
+                images.add(p);
+            }
+
+            productResponse.setPrice(product1.getPrice());
+            productResponse.setVendor(product1.getVendor());
+            productResponse.setName(product1.getName());
+            productResponseList.add(productResponse);
+
+        }
+        return productResponseList;
     }
 
 

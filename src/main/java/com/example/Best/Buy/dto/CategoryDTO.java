@@ -25,4 +25,5 @@ public class CategoryDTO {
     private LocalDate createdAt;
 
     private List<ProductDTO> product;
+    private Long parentId;
 }

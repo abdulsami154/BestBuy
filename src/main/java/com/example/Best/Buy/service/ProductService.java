@@ -12,4 +12,9 @@ public interface ProductService {
     List<ProductResponse> getProduct();
 
     ProductDTO save(ProductDTO productDto);
+
+    Long getCountTotalProducts();
+
+    List<ProductResponse> getAllProductsByVendorId(Long vendorId);
+
 }

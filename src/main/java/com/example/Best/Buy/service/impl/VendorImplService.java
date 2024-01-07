@@ -23,8 +23,10 @@ public class VendorImplService implements VendorService {
     }
 
     @Override
-    public VendorDTO checkVendor(VendorDTO vendorDTO) {
-       return  toDto(vendorRepository.findByNameAndPassword(vendorDTO.getName(),vendorDTO.getPassword()));
+    public String checkVendor(VendorDTO vendorDTO) {
+       Vendor vendor= vendorRepository.findByNameAndPassword(vendorDTO.getName(),vendorDTO.getPassword());
+        System.out.println(vendor.getId().toString());
+    return vendor.getId().toString();
     }
 
     public VendorDTO toDto(Vendor vendor){

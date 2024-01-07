@@ -16,4 +16,6 @@ public interface CategoryService {
 //    }
 
     public CategoryDTO update(CategoryDTO categoryDto, Long id);
+
+    Long getCategoryCount();
 }

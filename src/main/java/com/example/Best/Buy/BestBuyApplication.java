@@ -11,11 +11,12 @@ public class BestBuyApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BestBuyApplication.class, args);
-		System.out.println("aaa");
+		System.out.println("Started");
 	}
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
+
 
 }

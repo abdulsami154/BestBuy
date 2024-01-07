@@ -55,6 +55,11 @@ public class CategoryImplService implements CategoryService {
         throw new RuntimeException("Category not found on this id= "+id);
     }
 
+    @Override
+    public Long getCategoryCount() {
+        return categoryRepository.count();
+    }
+
     public Category toDo(CategoryDTO categoryDTO){
         return modelMapper.map(categoryDTO,Category.class);
     }

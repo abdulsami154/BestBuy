@@ -21,5 +21,5 @@ public class CartProductDTO {
     private Long quantity;
     private Cart cart;
     private Product product;
-    private OrderDetails orderDetails;
+//    private OrderDetails orderDetails;
 }

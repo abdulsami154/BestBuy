@@ -1,3 +1,4 @@
+package com.example.Best.Buy.dto;
 
 import com.example.Best.Buy.domain.Cart;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,5 @@ public class UserDTO {
     private LocalDate createdAt;
 
 
-    private Cart cart;
+//    private Cart cart;
 }

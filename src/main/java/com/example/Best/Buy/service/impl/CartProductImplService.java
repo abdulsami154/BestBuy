@@ -6,6 +6,7 @@ import com.example.Best.Buy.domain.Product;
 import com.example.Best.Buy.domain.User;
 import com.example.Best.Buy.dto.CartProductDTO;
 import com.example.Best.Buy.dto.CartProductRequest;
+import com.example.Best.Buy.dto.OrderDetailsDTO;
 import com.example.Best.Buy.repository.CartProductRepository;
 import com.example.Best.Buy.repository.CartRepository;
 import com.example.Best.Buy.repository.ProductRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ public class CartProductImplService implements CartProductService {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    OrderDetailsImplService orderDetailsImplService;
+
 
     public List<CartProductDTO> getAllCartProduct() {
         return cartProductRepository.findAll().stream().map(c->toDto(c)).collect(Collectors.toList());
@@ -96,6 +101,30 @@ public class CartProductImplService implements CartProductService {
         cartProduct=cartProductRepository.save(toDo(cartProductDTO));
 
         return toDto(cartProduct);
+    }
+
+    @Override
+    public List<CartProductDTO> updateCartProducts(List<CartProductRequest> cartProductRequest) {
+        List<CartProductDTO> cartProductDTOList=new ArrayList<>();
+        OrderDetailsDTO orderDetailsDTO=null;
+        for (CartProductRequest cartProductRequest1 :cartProductRequest) {
+            CartProduct cartProduct=cartProductRepository.findCartProductById(cartProductRequest1.getId());
+            if (cartProduct!=null){
+                cartProduct.setQuantity(cartProductRequest1.getQuantity());
+            }
+            cartProduct=cartProductRepository.save(cartProduct);
+            CartProductDTO cartProductDTO= toDto(cartProduct);
+            cartProductDTOList.add(cartProductDTO);
+            orderDetailsDTO=new OrderDetailsDTO();
+            if (cartProductDTO!=null) {
+                orderDetailsDTO = orderDetailsImplService.findByCartProductId(cartProduct.getId());
+                if (orderDetailsDTO == null) {
+                    orderDetailsDTO.setCartProduct(cartProduct);
+                    orderDetailsImplService.save(orderDetailsDTO);
+                }
+            }
+        }
+        return cartProductDTOList;
     }
 
 

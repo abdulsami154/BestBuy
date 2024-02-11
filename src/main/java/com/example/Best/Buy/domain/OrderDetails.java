@@ -21,6 +21,9 @@ public class OrderDetails {
     private Long id;
     private LocalDate createdAt;
 
+    @Column(columnDefinition="tinyint(1) default 1")
+    private Boolean isActive;
+
     @OneToOne
     @JoinColumn(name = "cartProduct_id",referencedColumnName = "id")
     private CartProduct cartProduct;

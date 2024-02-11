@@ -26,6 +26,9 @@ public class CartProduct {
     @JoinColumn(name = "product_id",referencedColumnName = "id")
     private Product product;
 
+    @Column(columnDefinition="tinyint(1) default 1")
+    private Boolean isActive;
+
     @JsonIgnore
     @OneToOne(mappedBy = "cartProduct",cascade = CascadeType.ALL,orphanRemoval = true)
     private OrderDetails orderDetails;

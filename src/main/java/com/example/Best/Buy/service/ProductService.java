@@ -17,4 +17,6 @@ public interface ProductService {
 
     List<ProductResponse> getAllProductsByVendorId(Long vendorId);
 
+    List<ProductResponse> getProductsByCategoryId(Long id);
+
 }

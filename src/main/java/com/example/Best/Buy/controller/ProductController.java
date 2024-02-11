@@ -43,6 +43,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getCountTotalProducts());
     }
 
+    @GetMapping("/product/byCategoryId")
+    public ResponseEntity<?> getProductsByCategoryId(@RequestParam("id") Long id){
+        return ResponseEntity.ok(productService.getProductsByCategoryId(id));
+    }
+
     @PostMapping("/product")
     public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO productDto){
         return ResponseEntity.ok(productService.save(productDto));

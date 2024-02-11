@@ -127,6 +127,33 @@ public class ProductImplService implements ProductService {
         return productResponseList;
     }
 
+    @Override
+    public List<ProductResponse> getProductsByCategoryId(Long id) {
+        List<ProductResponse> productResponseList=new ArrayList<>();
+        List<Product> products=productRepository.findByCategoryId(id);
+        for (Product product1:products){
+
+            ProductResponse productResponse=new ProductResponse();
+            productResponse.setId(product1.getId());
+            productResponse.setCategory(product1.getCategory());
+            List<ProductImage> images = new ArrayList<>();
+            for (ProductImage image: product1.getProductImages()
+            ) {
+                ProductImage p = new ProductImage();
+                p.setImage(image.getImage());
+                productResponse.setImage(p);
+                images.add(p);
+            }
+
+            productResponse.setPrice(product1.getPrice());
+            productResponse.setVendor(product1.getVendor());
+            productResponse.setName(product1.getName());
+            productResponseList.add(productResponse);
+
+        }
+        return productResponseList;
+    }
+
 
     public ProductDTO toDto(Product product){
         return modelMapper.map(product,ProductDTO.class);

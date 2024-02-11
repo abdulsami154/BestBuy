@@ -19,6 +19,8 @@ public class UserDTO {
 //    @NotBlank(message = "email should not be blank")
     private String email;
 //    @NotNull(message = "createdAt should not be blank")
+
+    private String password;
     private LocalDate createdAt;
 
 

@@ -20,5 +20,7 @@ public interface CartProductService {
 
     List<CartProductDTO> getAllCartProductById(Long id);
 
-    public CartProductDTO save(CartProductRequest cartProductRequest);
+     CartProductDTO save(CartProductRequest cartProductRequest);
+
+    List<CartProductDTO> updateCartProducts(List<CartProductRequest> cartProductRequest);
 }

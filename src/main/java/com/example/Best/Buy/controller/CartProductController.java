@@ -30,10 +30,17 @@ public class CartProductController {
         return ResponseEntity.ok(cartProductService.save(cartProductRequest));
     }
 
+    @PostMapping("/update/cartProduct")
+    public ResponseEntity<?> updateCartProducts(@RequestBody List<CartProductRequest> cartProductRequest){
+        return ResponseEntity.ok(cartProductService.updateCartProducts(cartProductRequest));
+    }
+
     @DeleteMapping("/cartProduct/{id}")
     public void deleteCartProduct(@PathVariable Long id){
         cartProductService.deleteById(id);
     }
+
+
 
     @PutMapping("/cartProduct/{id}")
     public ResponseEntity<CartProductDTO> updateCartProduct( @PathVariable Long id, @RequestBody CartProductDTO cartProductDto){

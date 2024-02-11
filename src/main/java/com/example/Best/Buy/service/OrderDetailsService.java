@@ -18,4 +18,8 @@ public interface OrderDetailsService {
 
     OrderDetailsDTO updateOrderDetail(OrderDetailsDTO orderDetailsDTO,Long id);
 
+    List<OrderDetailsDTO> getOrderDetailByCartId(Long cartId);
+
+    String orderDetailsDeleteById(Long id);
+
 }

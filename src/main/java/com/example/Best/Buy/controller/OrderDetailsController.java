@@ -19,6 +19,10 @@ public class OrderDetailsController {
     public ResponseEntity<List<OrderDetailsDTO>> getAllDetails(){
         return ResponseEntity.ok(orderDetailsService.getAllOrderDetails());
     }
+    @GetMapping("/orderDetailsByCartId")
+    public ResponseEntity<List<OrderDetailsDTO>> getOrderDetailByCartId(@RequestParam("cartId") Long cartId){
+        return ResponseEntity.ok(orderDetailsService.getOrderDetailByCartId(cartId));
+    }
     @PostMapping("/orderDetails")
     public ResponseEntity<OrderDetailsDTO> save(@RequestBody OrderDetailsDTO orderDetailsDTO){
         return ResponseEntity.ok(orderDetailsService.save(orderDetailsDTO));
@@ -33,5 +37,11 @@ public class OrderDetailsController {
     public ResponseEntity<OrderDetailsDTO> updateOrderDetails(@PathVariable Long id,@RequestBody OrderDetailsDTO orderDetailsDto){
         return ResponseEntity.ok(orderDetailsService.updateOrderDetail(orderDetailsDto,id));
     }
+
+    @DeleteMapping("/orderDetails/delete/{id}")
+    public ResponseEntity<?> orderDetailsDeleteById(@PathVariable Long id){
+        return ResponseEntity.ok(orderDetailsService.orderDetailsDeleteById(id));
+    }
+
 }
 

@@ -1,13 +1,16 @@
 package com.example.Best.Buy.service.impl;
 
+import com.example.Best.Buy.domain.CartProduct;
 import com.example.Best.Buy.domain.OrderDetails;
 import com.example.Best.Buy.dto.OrderDetailsDTO;
+import com.example.Best.Buy.repository.CartProductRepository;
 import com.example.Best.Buy.repository.OrderDetailsRepository;
 import com.example.Best.Buy.service.OrderDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,6 +19,9 @@ import java.util.stream.Collectors;
 public class OrderDetailsImplService implements OrderDetailsService {
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    CartProductRepository cartProductRepository;
 
     @Autowired
     OrderDetailsRepository orderDetailsRepository;
@@ -61,6 +67,37 @@ public class OrderDetailsImplService implements OrderDetailsService {
         throw new RuntimeException("Category not found on this id= "+id);
     }
 
+    @Override
+    public List<OrderDetailsDTO> getOrderDetailByCartId(Long cartId) {
+        List<OrderDetailsDTO> orderDetailsDTOList=new ArrayList<>();
+        List<OrderDetails> orderDetails=orderDetailsRepository.getOrderDetailByCartId(cartId);
+        if (orderDetails.size()>0){
+            orderDetailsDTOList=orderDetails.stream().map(c->toDto(c)).collect(Collectors.toList());
+        }
+        return orderDetailsDTOList;
+
+    }
+
+    @Override
+    public String orderDetailsDeleteById(Long id) {
+        OrderDetails orderDetails= orderDetailsRepository.findById(id).get();
+        orderDetails.setIsActive(false);
+        if (orderDetails.getCartProduct().getId()!=null){
+            CartProduct cartProduct= cartProductRepository.findById(orderDetails.getCartProduct().getId()).get();
+            cartProduct.setIsActive(false);
+            cartProductRepository.save(cartProduct);
+        }
+        orderDetails=orderDetailsRepository.save(orderDetails);
+//        System.out.println(orderDetails);
+        return "Deleted Successfully";
+    }
+
+    public OrderDetailsDTO findByCartProductId(Long id) {
+       OrderDetails orderDetails= orderDetailsRepository.findByCartProductId(id);
+       OrderDetailsDTO orderDetailsDTO=toDto(orderDetails);
+       return orderDetailsDTO;
+    }
+
 
     public OrderDetails toDo(OrderDetailsDTO orderDetailsDTO){
         return modelMapper.map(orderDetailsDTO,OrderDetails.class);
@@ -68,4 +105,6 @@ public class OrderDetailsImplService implements OrderDetailsService {
     public OrderDetailsDTO toDto(OrderDetails orderDetails){
         return modelMapper.map(orderDetails ,OrderDetailsDTO.class);
     }
+
+
 }

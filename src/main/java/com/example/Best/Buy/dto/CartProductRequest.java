@@ -13,6 +13,7 @@ public class CartProductRequest {
     //    @NotNull(message = "amount should not be Null")
 //    private Double amount;
     //    @NotNull(message = "quantity should not be Null")
+    private Long id;
     private Long quantity;
     private Long cartId;
     private Long productId;

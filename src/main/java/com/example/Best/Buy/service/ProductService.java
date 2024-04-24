@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDTO> searchAllProductByName(String value);
+    List<ProductResponse> searchAllProductByName(String value);
 
     List<ProductResponse> getProduct();
 
@@ -19,4 +19,5 @@ public interface ProductService {
 
     List<ProductResponse> getProductsByCategoryId(Long id);
 
+    List<ProductResponse> getProductByPageSize(Long currentPage,Long pageSize);
 }

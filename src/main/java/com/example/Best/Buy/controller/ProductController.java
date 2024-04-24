@@ -34,6 +34,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProduct());
     }
 
+    @GetMapping("/products/{currentPage}/{pageSize}")
+    public ResponseEntity<?> getAllProduct(@PathVariable Long currentPage,@PathVariable Long pageSize){
+        return ResponseEntity.ok(productService.getProductByPageSize(currentPage,pageSize));
+    }
+
     @PostMapping("/product/vendorId")
     public ResponseEntity<?> getAllProductsById(@RequestBody VendorIdRequest vendorIdRequest){
         return ResponseEntity.ok(productService.getAllProductsByVendorId(vendorIdRequest.getId()));
@@ -52,6 +57,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO productDto){
         return ResponseEntity.ok(productService.save(productDto));
     }
+
     @GetMapping("/image/{fileName:.+}")
     @ResponseBody
     public ResponseEntity<InputStreamResource> getFile(@PathVariable String fileName) throws IOException {

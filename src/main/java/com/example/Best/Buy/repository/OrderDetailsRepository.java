@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Long> {
@@ -17,5 +18,5 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetails,Long>
     @Query(value = "Select od.* from cart_product cp inner join order_details od on cp.id=od.cart_product_id where cart_id=:cartId And cp.is_active=True",nativeQuery = true)
     List<OrderDetails> getOrderDetailByCartId(@Param("cartId") Long cartId);
 
-    OrderDetails findByCartProductId(Long id);
+    Optional<OrderDetails> findByCartProductId(Long id);
 }

@@ -8,6 +8,7 @@ import com.example.Best.Buy.repository.OrderDetailsRepository;
 import com.example.Best.Buy.service.OrderDetailsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class OrderDetailsImplService implements OrderDetailsService {
 
     @Autowired
     OrderDetailsRepository orderDetailsRepository;
+
+
+    @Autowired
+    @Lazy
+    CartProductImplService cartProductImplService;
 
     public OrderDetailsDTO save(OrderDetailsDTO orderDetailsDTO) {
         OrderDetails orderDetails=orderDetailsRepository.save(toDo(orderDetailsDTO));
@@ -59,7 +65,7 @@ public class OrderDetailsImplService implements OrderDetailsService {
         if (orderDetailId.isPresent()) {
             OrderDetails orderDetailsUpdated = orderDetailsRepository.findById(id).orElse(null);
             orderDetailsUpdated.setCreatedAt(orderDetailsDTO.getCreatedAt());
-            orderDetailsUpdated.setCartProduct(orderDetailsDTO.getCartProduct());
+            orderDetailsUpdated.setCartProduct(cartProductImplService.toDo(orderDetailsDTO.getCartProductDTO()));
             OrderDetails orderDetails = orderDetailsRepository.save(orderDetailsUpdated);
             return toDto(orderDetails);
         }
@@ -72,7 +78,13 @@ public class OrderDetailsImplService implements OrderDetailsService {
         List<OrderDetailsDTO> orderDetailsDTOList=new ArrayList<>();
         List<OrderDetails> orderDetails=orderDetailsRepository.getOrderDetailByCartId(cartId);
         if (orderDetails.size()>0){
-            orderDetailsDTOList=orderDetails.stream().map(c->toDto(c)).collect(Collectors.toList());
+            for (OrderDetails orderDetail:orderDetails) {
+                OrderDetailsDTO orderDetailsDTO1=new OrderDetailsDTO();
+                orderDetailsDTO1.setId(orderDetail.getId());
+                orderDetailsDTO1.setCartProductDTO(cartProductImplService.toDto(orderDetail.getCartProduct()));
+                orderDetailsDTOList.add(orderDetailsDTO1);
+            }
+//            orderDetailsDTOList=orderDetails.stream().map(c->toDto(c)).collect(Collectors.toList());
         }
         return orderDetailsDTOList;
 
@@ -93,8 +105,11 @@ public class OrderDetailsImplService implements OrderDetailsService {
     }
 
     public OrderDetailsDTO findByCartProductId(Long id) {
-       OrderDetails orderDetails= orderDetailsRepository.findByCartProductId(id);
-       OrderDetailsDTO orderDetailsDTO=toDto(orderDetails);
+        Optional<OrderDetails> orderDetails= orderDetailsRepository.findByCartProductId(id);
+           if (!orderDetails.isPresent()){
+               return null;
+           }
+       OrderDetailsDTO orderDetailsDTO=toDto(orderDetails.get());
        return orderDetailsDTO;
     }
 

@@ -50,6 +50,22 @@ public class UserImplService implements UserService {
         }
         throw new RuntimeException("User not found on this id= " +id);
     }
+
+    @Override
+    public UserDTO login(UserDTO userDto) {
+
+        User user=userRepository.findByEmailAndPassword(userDto.getEmail(),userDto.getPassword());
+        UserDTO userDTO;
+        if (user==null){
+            return null;
+        }else {
+            userDTO=new UserDTO();
+            userDTO=toDto(user);
+
+        }
+        return userDTO;
+    }
+
     public User toDo(UserDTO UserDTO) {
         return modelMapper.map(UserDTO, User.class);
     }

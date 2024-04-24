@@ -13,4 +13,7 @@ public interface UserService {
     @Transactional
     public void deleteUser(Long id);
     public UserDTO update(UserDTO userDto, Long id);
+
+    UserDTO login(UserDTO userDto);
+
 }

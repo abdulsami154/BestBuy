@@ -1,16 +1,10 @@
 package com.example.Best.Buy.service.impl;
 
-import com.example.Best.Buy.domain.Cart;
-import com.example.Best.Buy.domain.CartProduct;
-import com.example.Best.Buy.domain.Product;
-import com.example.Best.Buy.domain.User;
+import com.example.Best.Buy.domain.*;
 import com.example.Best.Buy.dto.CartProductDTO;
 import com.example.Best.Buy.dto.CartProductRequest;
 import com.example.Best.Buy.dto.OrderDetailsDTO;
-import com.example.Best.Buy.repository.CartProductRepository;
-import com.example.Best.Buy.repository.CartRepository;
-import com.example.Best.Buy.repository.ProductRepository;
-import com.example.Best.Buy.repository.UserRepository;
+import com.example.Best.Buy.repository.*;
 import com.example.Best.Buy.service.CartProductService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -38,6 +32,9 @@ public class CartProductImplService implements CartProductService {
     ProductRepository productRepository;
     @Autowired
     OrderDetailsImplService orderDetailsImplService;
+
+    @Autowired
+    OrderDetailsRepository orderDetailsRepository;
 
 
     public List<CartProductDTO> getAllCartProduct() {
@@ -80,6 +77,7 @@ public class CartProductImplService implements CartProductService {
                 cartProductDTO.setId(cartproduct2.getId());
                 cartProductDTO.setProduct(product);
                 cartProductDTO.setCart(cart);
+                cartProductDTO.setIsActive(true);
                 Long quantity=cartproduct2.getQuantity();
                 quantity+=1;
                 cartProductDTO.setQuantity(quantity);
@@ -95,6 +93,7 @@ public class CartProductImplService implements CartProductService {
         }else {
             cartProductDTO.setProduct(product);
             cartProductDTO.setCart(cart);
+            cartProductDTO.setIsActive(true);
             cartProductDTO.setQuantity(cartProductRequest.getQuantity());
             cartProductDTO.setAmount(product.getPrice().doubleValue());
         }
@@ -107,6 +106,7 @@ public class CartProductImplService implements CartProductService {
     public List<CartProductDTO> updateCartProducts(List<CartProductRequest> cartProductRequest) {
         List<CartProductDTO> cartProductDTOList=new ArrayList<>();
         OrderDetailsDTO orderDetailsDTO=null;
+        OrderDetails orderDetails=null;
         for (CartProductRequest cartProductRequest1 :cartProductRequest) {
             CartProduct cartProduct=cartProductRepository.findCartProductById(cartProductRequest1.getId());
             if (cartProduct!=null){
@@ -115,12 +115,13 @@ public class CartProductImplService implements CartProductService {
             cartProduct=cartProductRepository.save(cartProduct);
             CartProductDTO cartProductDTO= toDto(cartProduct);
             cartProductDTOList.add(cartProductDTO);
-            orderDetailsDTO=new OrderDetailsDTO();
             if (cartProductDTO!=null) {
                 orderDetailsDTO = orderDetailsImplService.findByCartProductId(cartProduct.getId());
                 if (orderDetailsDTO == null) {
-                    orderDetailsDTO.setCartProduct(cartProduct);
-                    orderDetailsImplService.save(orderDetailsDTO);
+                    orderDetails=new OrderDetails();
+                    orderDetails.setCartProduct(cartProduct);
+                    orderDetails.setIsActive(true);
+                    orderDetailsRepository.save(orderDetails);
                 }
             }
         }

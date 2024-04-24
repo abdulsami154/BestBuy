@@ -1,6 +1,7 @@
 package com.example.Best.Buy.repository;
 
 import com.example.Best.Buy.domain.Product;
+import com.example.Best.Buy.dto.ProductResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,10 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Product findByIds(@Param("id") Long id);
 
     List<Product> findByCategoryId(Long id);
+
+
+    @Query(value = "SELECT * FROM product LIMIT :pageSize OFFSET :currentPg",nativeQuery = true)
+    List<Product> findBycurrentPageSIze(@Param("currentPg") Long currentPg,@Param("pageSize") Long pageSize);
 
 
 //    List<Product> findProductSearchByName(@Param("value")String value);

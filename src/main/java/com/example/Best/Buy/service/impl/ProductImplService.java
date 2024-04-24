@@ -30,8 +30,31 @@ public class ProductImplService implements ProductService {
     @Autowired
     CategoryRepository categoryRepository;
     @Override
-    public List<ProductDTO> searchAllProductByName(String value) {
-       return productRepository.findByName(value).stream().map(c->toDto(c)).collect(Collectors.toList());
+    public List<ProductResponse> searchAllProductByName(String value) {
+        List<ProductResponse> productResponseList=new ArrayList<>();
+        List<Product> product=productRepository.findByName(value);
+        for (Product product1:product){
+
+            ProductResponse productResponse=new ProductResponse();
+            productResponse.setId(product1.getId());
+            productResponse.setCategory(product1.getCategory());
+            List<ProductImage> images = new ArrayList<>();
+            for (ProductImage image: product1.getProductImages()
+            ) {
+                ProductImage p = new ProductImage();
+                p.setImage(image.getImage());
+                productResponse.setImage(p);
+                images.add(p);
+            }
+
+            productResponse.setPrice(product1.getPrice());
+            productResponse.setVendor(product1.getVendor());
+            productResponse.setName(product1.getName());
+            productResponseList.add(productResponse);
+
+        }
+        return productResponseList;
+//       return productRepository.findByName(value).stream().map(c->toDto(c)).collect(Collectors.toList());
     }
 
     @Override
@@ -152,6 +175,34 @@ public class ProductImplService implements ProductService {
 
         }
         return productResponseList;
+    }
+
+    @Override
+    public List<ProductResponse> getProductByPageSize(Long currentPage, Long pageSize) {
+        Long currentPg=(currentPage - 1) * pageSize;
+        List<Product> products=productRepository.findBycurrentPageSIze(currentPg,pageSize);
+        List<ProductResponse> productResponseList=new ArrayList<>();
+        for (Product product1:products){
+            ProductResponse productResponse=new ProductResponse();
+            productResponse.setId(product1.getId());
+            productResponse.setCategory(product1.getCategory());
+            List<ProductImage> images = new ArrayList<>();
+            for (ProductImage image: product1.getProductImages()
+            ) {
+                ProductImage p = new ProductImage();
+                p.setImage(image.getImage());
+                productResponse.setImage(p);
+                images.add(p);
+            }
+
+            productResponse.setPrice(product1.getPrice());
+            productResponse.setVendor(product1.getVendor());
+            productResponse.setName(product1.getName());
+            productResponseList.add(productResponse);
+
+        }
+        return productResponseList;
+
     }
 
 

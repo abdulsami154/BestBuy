@@ -21,5 +21,5 @@ public class CartDTO {
     private LocalDate createdAt;
 
     private User createdBy;
-    private List<CartProduct> cartProductsList;
+//    private List<CartProduct> cartProductsList;
 }

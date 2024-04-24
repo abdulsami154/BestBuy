@@ -22,10 +22,11 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    private String password;
     private LocalDate createdAt;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "createdBy" ,cascade = CascadeType.ALL,orphanRemoval = true)
-    private Cart cart;
+//
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "createdBy" ,cascade = CascadeType.ALL,orphanRemoval = true)
+//    private Cart cart;
 
 }

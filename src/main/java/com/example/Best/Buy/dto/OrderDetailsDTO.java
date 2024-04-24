@@ -17,5 +17,6 @@ public class OrderDetailsDTO {
     private Long id;
 //    @NotNull(message = "createdAt should not be Null")
     private LocalDate createdAt;
-    private CartProduct cartProduct;
+    private Boolean isActive;
+    private CartProductDTO cartProductDTO;
 }

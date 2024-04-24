@@ -1,3 +1,4 @@
+package com.example.Best.Buy.dto;
 
 import com.example.Best.Buy.domain.Cart;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,10 @@ public class UserDTO {
 //    @NotBlank(message = "email should not be blank")
     private String email;
 //    @NotNull(message = "createdAt should not be blank")
+
+    private String password;
     private LocalDate createdAt;
 
 
-    private Cart cart;
+//    private Cart cart;
 }

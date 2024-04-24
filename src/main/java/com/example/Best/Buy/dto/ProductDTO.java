@@ -1,10 +1,7 @@
 package com.example.Best.Buy.dto;
 
 import com.example.Best.Buy.domain.ProductImage;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 public class ProductDTO {
     private Long id;
     // @NotBlank(message = "name should not be blank")
@@ -20,7 +19,9 @@ public class ProductDTO {
     private Long price;
     // @NotNull(message = "category id should not be Null")
     private Long categoryId;
+    private Long vendorId;
     //    private List<String> images;
-    private List<ProductImage> productImages;
+//    private List<ProductImage> productImages;
+    private List<String> image;
 
 }

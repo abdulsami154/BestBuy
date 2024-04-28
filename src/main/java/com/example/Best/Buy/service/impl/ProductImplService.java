@@ -13,7 +13,9 @@ import com.example.Best.Buy.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +31,23 @@ public class ProductImplService implements ProductService {
     ProductRepository productRepository;
     @Autowired
     CategoryRepository categoryRepository;
+
+
+    @Override
+    public List<ProductDTO> saveProductByExcelFile(MultipartFile file){
+        List<ProductDTO> productDTO=new ArrayList<>();
+        if (ExcelUploadImplService.isValidExcelFile(file)){
+            try {
+                List<Product> products=ExcelUploadImplService.getProductDataFromExcel(file.getInputStream());
+            productDTO=productRepository.saveAll(products).stream()
+                    .map(c->toDto(c)).collect(Collectors.toList());
+            } catch (IOException e) {
+                throw new IllegalArgumentException("The file is not valid excel file");
+            }
+
+        }
+        return productDTO;
+    }
     @Override
     public List<ProductResponse> searchAllProductByName(String value) {
         List<ProductResponse> productResponseList=new ArrayList<>();

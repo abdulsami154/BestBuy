@@ -1,5 +1,6 @@
 package com.example.Best.Buy.service;
 
+import com.example.Best.Buy.domain.Product;
 import com.example.Best.Buy.dto.ProductDTO;
 import com.example.Best.Buy.dto.ProductResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,4 +21,6 @@ public interface ProductService {
     List<ProductResponse> getProductsByCategoryId(Long id);
 
     List<ProductResponse> getProductByPageSize(Long currentPage,Long pageSize);
+
+    List<ProductDTO> saveProductByExcelFile(MultipartFile file);
 }

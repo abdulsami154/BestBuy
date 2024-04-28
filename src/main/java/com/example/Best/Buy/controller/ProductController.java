@@ -39,6 +39,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductByPageSize(currentPage,pageSize));
     }
 
+    @PostMapping("/product/save/excelFile")
+    public ResponseEntity<?> saveProductThroughExcelFile(@RequestParam("file") MultipartFile file){
+        return ResponseEntity.ok(productService.saveProductByExcelFile(file));
+    }
+
     @PostMapping("/product/vendorId")
     public ResponseEntity<?> getAllProductsById(@RequestBody VendorIdRequest vendorIdRequest){
         return ResponseEntity.ok(productService.getAllProductsByVendorId(vendorIdRequest.getId()));
